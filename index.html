@@ -435,6 +435,12 @@ main.clean-top{margin:0}
 }
 
 </style>
+<style>
+#gameFruit header{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:16px}#gameFruit .eyebrow{margin:0;color:#c0b1e9;font-size:.78rem;letter-spacing:.12em}#gameFruit h1{margin:3px 0 0;font-size:clamp(1.65rem,5vw,2.45rem)}#gameFruit button{font:inherit;font-weight:650;color:inherit;border:1px solid #685983;border-radius:12px;background:#383052;padding:9px 13px;cursor:pointer;white-space:nowrap}#gameFruit button:focus-visible,#gameFruit canvas:focus-visible{outline:2px solid #f3cb82;outline-offset:3px}#gameFruit .layout{display:grid;grid-template-columns:minmax(0,430px) minmax(170px,1fr);align-items:start;gap:14px}#gameFruit .play{position:relative;border:1px solid #5e517c;border-radius:20px;overflow:hidden;background:#1b2038;box-shadow:0 15px 42px #07091470}#gameFruit canvas{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}#gameFruit aside{display:grid;gap:10px}#gameFruit .card{background:#22253e;border:1px solid #444467;border-radius:16px;padding:13px}#gameFruit .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}#gameFruit .stats span,#gameFruit .label{color:#c7bfde;font-size:.78rem;display:block}#gameFruit .stats strong{display:block;margin-top:2px;font-size:1.42rem;font-variant-numeric:tabular-nums}#gameFruit .next{display:flex;align-items:center;gap:8px}#gameFruit .next canvas{width:48px;height:48px;cursor:default}#gameFruit .next strong{font-size:.93rem}#gameFruit p.help{font-size:.82rem;line-height:1.6;color:#d4cbe7;margin:0}#gameFruit .chain{font-size:.95rem;line-height:1.65;margin-top:5px}#gameFruit .overlay{position:absolute;inset:0;display:grid;place-content:center;text-align:center;background:#10132adc;gap:12px;padding:20px}#gameFruit .overlay[hidden]{display:none}#gameFruit .overlay h2,#gameFruit .overlay p{margin:0}#gameFruit .overlay button{justify-self:center}
+@media(max-width:600px){#gameFruit header{margin-bottom:10px}#gameFruit .layout{grid-template-columns:minmax(0,1fr);gap:8px}#gameFruit aside{grid-row:1;grid-template-columns:1.2fr 1fr;gap:8px}#gameFruit .card{padding:8px 10px}#gameFruit .next canvas{width:39px;height:39px}#gameFruit .guide{grid-column:1/-1;padding:7px 10px}#gameFruit .guide .chain,#gameFruit .guide .label{display:none}#gameFruit .play{width:min(100%,350px);justify-self:center}#gameFruit p.help{font-size:.74rem}}
+
+#gameFruit[hidden]{display:none} #gameFruit .layout{max-width:680px;margin:auto}
+</style>
 </head>
 <body>
 <main class="clean-top">
@@ -483,7 +489,7 @@ main.clean-top{margin:0}
 <button class="moyu-trigger" id="moyuOpen" type="button" aria-haspopup="dialog" aria-controls="communityOverlay">🐈‍⬛ 摸鱼中心</button>
 <div class="community-overlay" id="communityOverlay" hidden>
   <div class="community-panel" role="dialog" aria-modal="true" aria-labelledby="communityTitle">
-    <div class="community-head"><div><h2 id="communityTitle">🐾 黑猫摸鱼俱乐部</h2><p class="community-sub">黑猫跑酷 · 合成 911 · 贪吃蛇 · 匿名留言</p></div><button class="community-close" type="button" id="moyuClose" aria-label="关闭摸鱼中心">×</button></div>
+    <div class="community-head"><div><h2 id="communityTitle">🐾 黑猫摸鱼俱乐部</h2><p class="community-sub">黑猫跑酷 · 合成 911 · 贪吃蛇 · 合成大西瓜 · 匿名留言</p></div><button class="community-close" type="button" id="moyuClose" aria-label="关闭摸鱼中心">×</button></div>
     <div class="community-profile"><label for="moyuNick">我的昵称</label><input id="moyuNick" type="text" maxlength="12" placeholder="匿名猫猫" autocomplete="off" /><button type="button" id="moyuSaveNick" class="community-small-btn">保存昵称</button><span class="community-mode">共享排行与留言</span></div>
     <div class="community-tabs" role="tablist" aria-label="摸鱼中心内容">
       <button type="button" class="community-tab" role="tab" id="moyuTabGame" aria-controls="moyuGame" aria-selected="true">🎮 小游戏</button>
@@ -497,6 +503,7 @@ main.clean-top{margin:0}
     <button type="button" class="community-game-option" data-game="runner" aria-pressed="true">🐈‍⬛ 黑猫跑酷</button>
     <button type="button" class="community-game-option" data-game="merge" aria-pressed="false">🏎️ 合成 911</button>
     <button type="button" class="community-game-option" data-game="snake" aria-pressed="false">🐍 黑猫贪吃蛇</button>
+    <button type="button" class="community-game-option" data-game="fruit" aria-pressed="false">🍉 合成大西瓜</button>
   </div>
   <div class="community-game" id="gameRunner">
     <p class="community-hint">躲开 Jira 工单和加班通知，坚持越久得分越高。空格 / ↑ 跳跃，手机点击画面或「跳跃」。</p>
@@ -520,7 +527,21 @@ main.clean-top{margin:0}
     <div class="community-play-snake"><div class="community-canvas-wrap"><canvas class="community-game-canvas" id="snakeCanvas" width="480" height="320" aria-label="黑猫贪吃蛇游戏画面"></canvas></div><div class="community-snake-controls"><div class="community-arrow-pad" aria-label="贪吃蛇方向控制"><button class="up" data-snake-dir="up" type="button" aria-label="向上">↑</button><button class="left" data-snake-dir="left" type="button" aria-label="向左">←</button><button class="down" data-snake-dir="down" type="button" aria-label="向下">↓</button><button class="right" data-snake-dir="right" type="button" aria-label="向右">→</button></div><div class="community-control-row" style="justify-content:center"><button id="snakeStart" class="community-action primary" type="button">开始游戏</button><button id="snakePause" class="community-action" type="button" disabled>暂停</button></div></div></div>
     <p class="community-game-flash" id="snakeMessage" aria-live="polite">准备出发，奶茶就在前方。</p>
   </div>
-  <p class="community-best-select-hint">本机最高分会自动保存。跑酷和贪吃蛇结束后上榜，合成 911 可点击「结算上榜」。</p>
+  <div class="community-game" id="gameFruit" hidden><p id="fruit-nick-status" class="community-feedback" aria-live="polite"></p>
+<header><div><p class="eyebrow">圆形水果 · 本机计分</p><h1>🍉 合成大西瓜</h1></div><button id="fruit-restart" type="button">重新开局</button></header>
+<div class="layout">
+<div class="play" aria-label="游戏区">
+<canvas id="fruit-game" width="800" height="1040" tabindex="0" aria-label="水果投放区，左右键瞄准，空格投放"></canvas>
+<div class="overlay" id="fruit-overlay" hidden><h2>水果筐满啦</h2><p id="fruit-result"></p><button id="fruit-again" type="button">再来一局</button></div>
+</div>
+<aside aria-label="游戏信息">
+<div class="card stats"><div><span>得分</span><strong id="fruit-score">0</strong></div><div><span>本机最高</span><strong id="fruit-best">0</strong></div></div>
+<div class="card next"><canvas id="fruit-next" width="96" height="96" aria-hidden="true"></canvas><div><span class="label">下一个水果</span><strong id="fruit-next-name"></strong></div></div>
+<div class="card guide"><span class="label">合成顺序</span><div class="chain" aria-label="樱桃、草莓、葡萄、橘子、苹果、桃子、梨、菠萝、蜜瓜、西瓜">🍒 → 🍓 → 🍇 → 🍊 → 🍎 → 🍑 → 🍐 → 🍍 → 🍈 → 🍉</div><p class="help">移动鼠标后点击，或手指拖动后松手投放。也可用 ← → 瞄准、空格投放。同种水果相碰就合成。</p></div>
+</aside>
+</div>
+</div>
+  <p class="community-best-select-hint">本机最高分会自动保存。跑酷和贪吃蛇结束后上榜，合成 911 可点击「结算上榜」。大西瓜记录保存在本机。</p>
 </section>
 
 <section id="moyuRank" role="tabpanel" aria-labelledby="moyuTabRank" hidden>
@@ -605,6 +626,151 @@ const $=id=>document.getElementById(id);
 const store=(key,value)=>{try{localStorage.setItem('nagito_moyu_'+key,JSON.stringify(value))}catch{}};
 const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem('nagito_moyu_'+key))??fallback}catch{return fallback}};
 const gameTitles={runner:'黑猫跑酷',merge:'合成 911',snake:'黑猫贪吃蛇'};
+const setFruitActive=(()=>{
+'use strict';
+const W=400,H=520,LEFT=18,RIGHT=382,FLOOR=502,LINE=100;
+const fruit=[
+ ['樱桃',12,'#ff6b8e','#a51c56'],['草莓',16,'#ff8b82','#b9294d'],
+ ['葡萄',20,'#bf9cf6','#6235ad'],['橘子',25,'#ffc565','#dc681f'],
+ ['苹果',31,'#ff8874','#a72445'],['桃子',37,'#ffbd9f','#e16a96'],
+ ['梨',44,'#d9ec84','#84a734'],['菠萝',52,'#ffdf75','#cc8826'],
+ ['蜜瓜',61,'#a9df85','#548d48'],['西瓜',72,'#70cf83','#206046']
+];
+const canvas=document.getElementById('fruit-game'), ctx=canvas.getContext('2d');
+const nextCanvas=document.getElementById('fruit-next'), nextCtx=nextCanvas.getContext('2d');
+const el=id=>document.getElementById('fruit-'+id);
+ctx.scale(2,2);nextCtx.scale(2,2);
+const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+const pick=()=>Math.floor(Math.random()*4);
+let bodies,aim,current,next,score,best=0,cooldown,overflow,ended;
+try{best=Number(localStorage.getItem('nagito_fruit_best'))||0}catch{}
+function paintFruit(c,x,y,type,scale=1){
+ const [,size,light,dark]=fruit[type], r=size*scale;
+ c.save();c.translate(x,y);
+ const fill=c.createRadialGradient(-r*.35,-r*.42,r*.08,0,0,r*1.15);
+ fill.addColorStop(0,light);fill.addColorStop(1,dark);
+ c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.fillStyle=fill;c.fill();
+ c.save();c.clip();
+ if(type===9){
+  c.strokeStyle='#174b3e';c.lineWidth=r*.13;
+  for(const k of [-.72,-.32,.17,.61]){
+   c.beginPath();c.moveTo(k*r-r*.36,-r);
+   c.bezierCurveTo(k*r+r*.42,-r*.2,k*r-r*.36,r*.36,k*r+r*.34,r);c.stroke();
+  }
+ }else if([1,3,7,8].includes(type)){
+  c.fillStyle=type===1?'#ffe2a699':'#ffffff37';
+  for(let i=0;i<24;i++){
+   const a=i*2.39996, d=Math.sqrt((i+.5)/24)*r*.9;
+   c.beginPath();c.arc(Math.cos(a)*d,Math.sin(a)*d,Math.max(.6,r*.025),0,7);c.fill();
+  }
+ }
+ c.restore();
+ c.beginPath();c.arc(0,0,r-.6,0,7);c.strokeStyle='#ffffff48';c.lineWidth=1.2;c.stroke();
+ c.fillStyle='#ffffff42';c.beginPath();c.ellipse(-r*.35,-r*.46,r*.22,r*.08,-.55,0,7);c.fill();
+ if([0,1,4,5,6,7].includes(type)){
+  c.fillStyle='#8ed08a';c.beginPath();c.ellipse(r*.15,-r*.82,r*.26,r*.09,-.4,0,7);c.fill();
+ }
+ c.restore();
+}
+function updateNext(){
+ nextCtx.clearRect(0,0,48,48);
+ paintFruit(nextCtx,24,24,next,15/fruit[next][1]);
+ el('next-name').textContent=fruit[next][0];
+}
+function reset(focus=true){
+ bodies=[];aim=W/2;current=pick();next=pick();score=0;cooldown=0;overflow=0;ended=false;
+ el('score').textContent='0';el('best').textContent=best;el('overlay').hidden=true;updateNext();if(focus)canvas.focus({preventScroll:true});
+}
+function ball(x,y,type,vx=0,vy=0,age=0){return {x,y,type,r:fruit[type][1],vx,vy,age}}
+function drop(){
+ if(ended||cooldown>0)return;
+ const r=fruit[current][1],x=clamp(aim,LEFT+r,RIGHT-r);
+ bodies.push(ball(x,49,current,0,35));current=next;next=pick();
+ cooldown=.43;updateNext();
+}
+function bounds(b){
+ if(b.x-b.r<LEFT){b.x=LEFT+b.r;b.vx=Math.abs(b.vx)*.25}
+ if(b.x+b.r>RIGHT){b.x=RIGHT-b.r;b.vx=-Math.abs(b.vx)*.25}
+ if(b.y+b.r>FLOOR){b.y=FLOOR-b.r;b.vy=b.vy>35?-b.vy*.2:0;b.vx*=.95}
+}
+function merge(i,j){
+ const a=bodies[i],b=bodies[j],type=a.type+1,r=fruit[type][1];
+ const x=clamp((a.x+b.x)/2,LEFT+r,RIGHT-r),y=Math.min(FLOOR-r,(a.y+b.y)/2);
+ bodies[i]=ball(x,y,type,(a.vx+b.vx)*.4,(a.vy+b.vy)*.35,Math.max(a.age,b.age));
+ bodies.splice(j,1);score+=type*10;el('score').textContent=score;
+ if(score>best){best=score;el('best').textContent=best;try{localStorage.setItem('nagito_fruit_best',String(best))}catch{}}
+}
+function solve(){
+ for(let i=0;i<bodies.length;i++){
+  const a=bodies[i];
+  for(let j=i+1;j<bodies.length;j++){
+   const b=bodies[j],dx=b.x-a.x,dy=b.y-a.y,limit=a.r+b.r,d2=dx*dx+dy*dy;
+   if(d2>limit*limit)continue;
+   if(a.type===b.type&&a.type<fruit.length-1){merge(i,j);return true}
+   const d=Math.sqrt(d2), nx=d>1e-6?dx/d:1,ny=d>1e-6?dy/d:0;
+   const ma=1/(a.r*a.r),mb=1/(b.r*b.r),sum=ma+mb;
+   const correction=Math.max(0,limit-d-.08)*.88/sum;
+   a.x-=nx*correction*ma;a.y-=ny*correction*ma;b.x+=nx*correction*mb;b.y+=ny*correction*mb;
+   const vn=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;
+   if(vn>=0)continue;
+   const impulse=-vn*(vn < -65?1.16:1)/sum;
+   a.vx-=impulse*nx*ma;a.vy-=impulse*ny*ma;b.vx+=impulse*nx*mb;b.vy+=impulse*ny*mb;
+  }
+ }
+ return false;
+}
+function step(dt){
+ if(ended)return;
+ cooldown=Math.max(0,cooldown-dt);
+ for(const b of bodies){b.age+=dt;b.vy=Math.min(950,b.vy+760*dt);b.vx*=.998;b.x+=b.vx*dt;b.y+=b.vy*dt;bounds(b)}
+ for(let pass=0;pass<5;pass++){solve();for(const b of bodies)bounds(b)}
+ const above=bodies.some(b=>b.age>.8&&b.y-b.r<LINE);
+ overflow=above?overflow+dt:0;
+ if(overflow>=1.25){ended=true;el('result').textContent='本局得分 '+score;el('overlay').hidden=false;el('again').focus({preventScroll:true})}
+}
+function draw(){
+ ctx.fillStyle='#1a2036';ctx.fillRect(0,0,W,H);
+ ctx.fillStyle='#222941';ctx.fillRect(LEFT,LINE,RIGHT-LEFT,FLOOR-LINE);
+ ctx.strokeStyle='#746891';ctx.lineWidth=2;
+ ctx.beginPath();ctx.moveTo(LEFT,80);ctx.lineTo(LEFT,FLOOR);ctx.lineTo(RIGHT,FLOOR);ctx.lineTo(RIGHT,80);ctx.stroke();
+ ctx.setLineDash([5,5]);ctx.strokeStyle=overflow>0?'#ff817f':'#a18db078';
+ ctx.beginPath();ctx.moveTo(LEFT,LINE);ctx.lineTo(RIGHT,LINE);ctx.stroke();
+ ctx.setLineDash([]);ctx.fillStyle=overflow>0?'#ff9d91':'#c1b4d4';ctx.font='11px system-ui';ctx.fillText(overflow>0?'快溢出啦！':'警戒线',LEFT+7,LINE-7);
+ if(!ended){
+  const r=fruit[current][1],x=clamp(aim,LEFT+r,RIGHT-r);
+  ctx.setLineDash([3,7]);ctx.strokeStyle='#d6c6e550';ctx.beginPath();ctx.moveTo(x,51);ctx.lineTo(x,FLOOR-4);ctx.stroke();ctx.setLineDash([]);
+  ctx.globalAlpha=cooldown>0?.36:1;paintFruit(ctx,x,49,current);ctx.globalAlpha=1;
+ }
+ for(const b of bodies)paintFruit(ctx,b.x,b.y,b.type);
+}
+let last=null,remaining=0,raf=null;
+function frame(t){
+ if(last!==null)remaining+=Math.min(.05,(t-last)/1000);last=t;
+ while(remaining>=1/120){step(1/120);remaining-=1/120}
+ draw();raf=requestAnimationFrame(frame);
+}
+function aimAt(e){const box=canvas.getBoundingClientRect();aim=clamp((e.clientX-box.left)*W/box.width,LEFT,RIGHT)}
+let pointer=null;
+canvas.addEventListener('pointerdown',e=>{
+ if(pointer!==null||e.button!==0)return;
+ pointer=e.pointerId;canvas.focus({preventScroll:true});canvas.setPointerCapture(pointer);aimAt(e);
+});
+canvas.addEventListener('pointermove',e=>{if(e.pointerId===pointer||(pointer===null&&e.pointerType==='mouse'))aimAt(e)});
+canvas.addEventListener('pointerup',e=>{if(e.pointerId!==pointer)return;pointer=null;aimAt(e);drop()});
+canvas.addEventListener('lostpointercapture',e=>{if(pointer===e.pointerId)pointer=null});
+canvas.addEventListener('keydown',e=>{
+ if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();aim=clamp(aim+(e.key==='ArrowLeft'?-12:12),LEFT,RIGHT)}
+ if(e.code==='Space'||e.key==='Enter'){e.preventDefault();if(!e.repeat)drop()}
+});
+el('restart').onclick=()=>reset();el('again').onclick=()=>reset();
+reset(false);draw();
+return active=>{
+ if(active&&raf===null){last=null;remaining=0;raf=requestAnimationFrame(frame)}
+ if(!active&&raf!==null){cancelAnimationFrame(raf);raf=null}
+};
+
+})();
+const gamePanels=['runner','merge','snake','fruit'];
 const tabs=['moyuGame','moyuRank','moyuComment'];
 const bests=read('best_scores',{runner:0,merge:0,snake:0});
 for(const k of Object.keys(gameTitles))bests[k]=Number(bests[k])||0;
@@ -639,27 +805,31 @@ function setTab(which){
  tabs.forEach((id,i)=>{const yes=id===which;$(id).hidden=!yes;$( ['moyuTabGame','moyuTabRank','moyuTabComment'][i]).setAttribute('aria-selected',String(yes))});
  if(which==='moyuRank')refreshRank();
  if(which==='moyuComment')refreshComments();
+ syncFruit();
 }
 function isGameActive(){return !$('communityOverlay').hidden&&!$('moyuGame').hidden}
+function syncFruit(){setFruitActive(currentGame==='fruit'&&isGameActive()&&!document.hidden)}
 function chooseGame(which){
  if(which!==currentGame)pauseGames();
  currentGame=which;
- for(const key of Object.keys(gameTitles))$('game'+key[0].toUpperCase()+key.slice(1)).hidden=key!==which;
+ for(const key of gamePanels)$('game'+key[0].toUpperCase()+key.slice(1)).hidden=key!==which;
  document.querySelectorAll('[data-game]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.game===which)));
  if(which==='runner')drawRunner();
  if(which==='snake')drawSnake();
+ syncFruit();
+ if(which==='fruit'&&isGameActive())$('fruit-game').focus({preventScroll:true});
 }
-function openModal(){savedFocus=document.activeElement;$('communityOverlay').hidden=false;document.body.style.overflow='hidden';$('moyuClose').focus();if(currentGame==='runner')drawRunner();if(currentGame==='snake')drawSnake();if(!$('moyuRank').hidden)refreshRank();if(!$('moyuComment').hidden)refreshComments()}
-function closeModal(){pauseGames();$('communityOverlay').hidden=true;document.body.style.overflow='';if(savedFocus&&savedFocus.focus)savedFocus.focus()}
+function openModal(){savedFocus=document.activeElement;$('communityOverlay').hidden=false;document.body.style.overflow='hidden';$('moyuClose').focus();if(currentGame==='runner')drawRunner();if(currentGame==='snake')drawSnake();if(!$('moyuRank').hidden)refreshRank();if(!$('moyuComment').hidden)refreshComments();syncFruit()}
+function closeModal(){pauseGames();$('communityOverlay').hidden=true;syncFruit();document.body.style.overflow='';if(savedFocus&&savedFocus.focus)savedFocus.focus()}
 $('moyuOpen').addEventListener('click',openModal);
 $('moyuClose').addEventListener('click',closeModal);
 $('communityOverlay').addEventListener('click',e=>{if(e.target===$('communityOverlay'))closeModal()});
 [['moyuTabGame','moyuGame'],['moyuTabRank','moyuRank'],['moyuTabComment','moyuComment']].forEach(([btn,id])=>$(btn).addEventListener('click',()=>setTab(id)));
 document.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>chooseGame(b.dataset.game)));
 document.querySelectorAll('[data-rank]').forEach(b=>b.addEventListener('click',()=>{rankGame=b.dataset.rank;document.querySelectorAll('[data-rank]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.rank===rankGame)));refreshRank()}));
-$('moyuSaveNick').addEventListener('click',()=>{nickname=$('moyuNick').value.trim().slice(0,12);store('nickname',nickname);feedback(currentGame==='runner'?'runnerMessage':currentGame==='merge'?'mergeMessage':'snakeMessage','昵称已保存：'+displayName());if(!$('moyuRank').hidden)refreshRank()});
+$('moyuSaveNick').addEventListener('click',()=>{nickname=$('moyuNick').value.trim().slice(0,12);store('nickname',nickname);feedback(currentGame==='runner'?'runnerMessage':currentGame==='merge'?'mergeMessage':currentGame==='fruit'?'fruit-nick-status':'snakeMessage','昵称已保存：'+displayName());if(!$('moyuRank').hidden)refreshRank()});
 
-document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseGames()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseGames();syncFruit()});
 document.addEventListener('keydown',e=>{
  if(e.key==='Escape'&&!$('communityOverlay').hidden){closeModal();return}
  if(!isGameActive()||/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)||e.target.isContentEditable)return;
