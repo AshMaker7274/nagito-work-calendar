@@ -630,11 +630,11 @@ const setFruitActive=(()=>{
 'use strict';
 const W=400,H=520,LEFT=18,RIGHT=382,FLOOR=502,LINE=100;
 const fruit=[
- ['樱桃',12,'#ff6b8e','#a51c56'],['草莓',16,'#ff8b82','#b9294d'],
- ['葡萄',20,'#bf9cf6','#6235ad'],['橘子',25,'#ffc565','#dc681f'],
- ['苹果',31,'#ff8874','#a72445'],['桃子',37,'#ffbd9f','#e16a96'],
- ['梨',44,'#d9ec84','#84a734'],['菠萝',52,'#ffdf75','#cc8826'],
- ['蜜瓜',61,'#a9df85','#548d48'],['西瓜',72,'#70cf83','#206046']
+ ['樱桃',15,'#ff6b8e','#a51c56'],['草莓',20,'#ff8b82','#b9294d'],
+ ['葡萄',25,'#bf9cf6','#6235ad'],['橘子',31,'#ffc565','#dc681f'],
+ ['苹果',39,'#ff8874','#a72445'],['桃子',46,'#ffbd9f','#e16a96'],
+ ['梨',55,'#d9ec84','#84a734'],['菠萝',65,'#ffdf75','#cc8826'],
+ ['蜜瓜',76,'#a9df85','#548d48'],['西瓜',90,'#70cf83','#206046']
 ];
 const canvas=document.getElementById('fruit-game'), ctx=canvas.getContext('2d');
 const nextCanvas=document.getElementById('fruit-next'), nextCtx=nextCanvas.getContext('2d');
@@ -657,19 +657,25 @@ const fruitShapes=[
  'M 0,-.94 C -.59,-.94 -.98,-.53 -.98,0 C -.98,.53 -.59,.94 0,.94 C .59,.94 .98,.53 .98,0 C .98,-.53 .59,-.94 0,-.94 Z'
 ].map(shape=>shape?new Path2D(shape):null);
 function drawFruitArt(c,x,y,type,scale){
- const [,size,light,dark]=fruit[type],r=size*scale;
+ const [,size,mid,dark]=fruit[type],r=size*scale;
+ const highlights=['#ffb5c6','#ffc3a6','#e7ccff','#ffe1a2','#ffd49a','#ffe2b3','#f5f8ac','#fff2a6','#e9f5b7','#b4ef9a'];
  const path=fruitShapes[type];
  c.save();c.translate(x,y);c.scale(r,r);
  c.lineCap='round';c.lineJoin='round';
  const fill=c.createRadialGradient(-.32,-.42,.04,.07,.12,1.12);
- fill.addColorStop(0,light);fill.addColorStop(.65,light);fill.addColorStop(1,dark);
+ fill.addColorStop(0,highlights[type]);fill.addColorStop(.50,mid);fill.addColorStop(1,dark);
  function ellipse(cx,cy,rx,ry,color,angle=0){
   c.fillStyle=color;c.beginPath();c.ellipse(cx,cy,rx,ry,angle,0,Math.PI*2);c.fill();
  }
  function leaf(cx,cy,length,angle,color='#79c567'){
   c.save();c.translate(cx,cy);c.rotate(angle);
   c.beginPath();c.moveTo(0,0);c.quadraticCurveTo(length*.44,-length*.48,length,0);
-  c.quadraticCurveTo(length*.55,length*.4,0,0);c.fillStyle=color;c.fill();c.restore();
+  c.quadraticCurveTo(length*.55,length*.32,0,0);c.closePath();
+  const leafFill=c.createLinearGradient(0,-length*.22,0,length*.20);
+  leafFill.addColorStop(0,'#d0e98a');leafFill.addColorStop(.53,color);leafFill.addColorStop(1,'#246044');
+  c.fillStyle=leafFill;c.fill();
+  curve('#ecf6b276',.023,length*.08,0,length*.46,-length*.024,length*.81,0);
+  c.restore();
  }
  function curve(color,width,x0,y0,x1,y1,x2,y2){
   c.strokeStyle=color;c.lineWidth=width;c.beginPath();c.moveTo(x0,y0);c.quadraticCurveTo(x1,y1,x2,y2);c.stroke();
@@ -679,7 +685,8 @@ function drawFruitArt(c,x,y,type,scale){
    const berry=c.createRadialGradient(px-sz*.32,py-sz*.35,.02,px,py,sz);
    berry.addColorStop(0,'#d9b8ff');berry.addColorStop(.48,'#a474d7');berry.addColorStop(1,'#50327e');
    ellipse(px,py,sz,sz,berry);
-   ellipse(px-sz*.26,py-sz*.32,sz*.25,sz*.13,'#fff3ff8a',-.42);
+   ellipse(px-sz*.29,py-sz*.31,sz*.21,sz*.115,'#fff3ffc0',-.47);
+   ellipse(px+sz*.38,py+sz*.41,sz*.25,sz*.10,'#a786dd55',-.55);
   }
   curve('#a1bd70',.08,.02,-.44,.14,-.74,.04,-.99);
   leaf(.08,-.79,.57,-2.74,'#75b65d');
@@ -692,21 +699,35 @@ function drawFruitArt(c,x,y,type,scale){
    c.beginPath();c.moveTo(k*.43,-1.04);
    c.bezierCurveTo(k-.28,-.45,k+.21,.47,k*.43,1.04);
    c.bezierCurveTo(k+.02,.43,k-.45,-.43,k*.43-.11,-1.04);
-   c.fillStyle='#215e43';c.fill();
+   const rind=c.createLinearGradient(-.85,-.87,.82,.92);
+   rind.addColorStop(0,'#438457');rind.addColorStop(.47,'#1e6543');rind.addColorStop(1,'#143d35');
+   c.fillStyle=rind;c.fill();
   }
  }else if(type===7||type===8){
-  for(let i=-8;i<=8;i++){
-   const q=i*(type===7?.29:.22);
-   curve(type===7?'#a7652d':'#edf4b6',type===7?.032:.021,q-1,-1,q,0,q+1,1);
-   curve(type===7?'#a7652d':'#edf4b6',type===7?.032:.021,q+1,-1,q,0,q-1,1);
+  for(let row=-3;row<=3;row++){
+   for(let col=-3;col<=3;col++){
+    const px=col*.34+(row%2)*.17,py=row*.245;
+    if(type===7){
+     curve('#a96933b8',.034,px-.14,py,px,py+.22,px+.14,py);
+     curve('#fff2aabd',.023,px-.11,py+.01,px,py-.15,px+.11,py+.01);
+     ellipse(px,py+.017,.025,.036,'#9e5934');
+    }else{
+     curve('#fbf1c4b5',.024,px-.16,py,px-.12,py-.06,px,py-.16);
+     curve('#f4e9b8a6',.021,px,py-.16,px+.08,py-.055,px+.18,py+.025);
+     curve('#f4e9b8a6',.021,px+.18,py+.025,px+.04,py+.067,px+.015,py+.14);
+     curve('#e9dfae92',.019,px+.015,py+.14,px-.08,py+.065,px-.16,py);
+    }
+   }
   }
-  if(type===7)for(let j=0;j<5;j++)for(let i=0;i<5;i++)ellipse((i-2)*.29+(j%2)*.145,-.39+j*.28,.026,.035,'#93552b');
  }else if(type===1||type===3||type===6){
   const seeds=type===1?27:40;
   for(let i=0;i<seeds;i++){
    const a=i*2.39996,d=Math.sqrt((i+.5)/seeds)*.92;
    const px=Math.cos(a)*d,py=Math.sin(a)*d;
-   if(type===1)ellipse(px,py,.027,.049,'#ffe5a3',a*.27);
+   if(type===1){
+    ellipse(px,py,.049,.069,'#a8304b92',a*.27);
+    ellipse(px-.006,py-.014,.026,.042,'#ffe9ab',a*.27);
+   }
    else ellipse(px,py,.018,.022,type===3?'#fff1ac77':'#4776225e');
   }
  }
@@ -714,9 +735,14 @@ function drawFruitArt(c,x,y,type,scale){
   ellipse(.53,.28,.52,.61,'#f665a663',-.23);
   curve('#b74f7a',.035,.12,-.79,.53,-.12,.16,.95);
  }
- ellipse(-.36,-.37,.21,.09,'#fff8e163',-.53);
+ const sheen=c.createRadialGradient(-.38,-.38,.03,-.38,-.38,.44);
+ sheen.addColorStop(0,'#fffbe9b0');sheen.addColorStop(.48,'#fff6dd48');sheen.addColorStop(1,'#fff6dd00');
+ ellipse(-.38,-.38,.44,.34,sheen,-.53);
+ if([0,3,4].includes(type))ellipse(-.39,-.43,.16,.053,'#fffbea87',-.53);
  c.restore();
- c.lineWidth=.025;c.strokeStyle='#fff9e75c';c.stroke(path);
+ const rim=c.createLinearGradient(-.8,-.88,.82,.85);
+ rim.addColorStop(0,'#fff3c0a2');rim.addColorStop(.56,'#fff3c020');rim.addColorStop(1,'#201330a8');
+ c.lineWidth=.029;c.strokeStyle=rim;c.stroke(path);
  if(type===1){
   for(const [angle,len] of [[.6,.40],[1.25,.49],[1.85,.48],[2.55,.41],[-2.8,.36],[-.3,.36]])leaf(0,-.75,len,angle,'#68af57');
   curve('#52934c',.07,.02,-.73,.01,-.85,.13,-.95);
@@ -724,7 +750,8 @@ function drawFruitArt(c,x,y,type,scale){
   for(const [angle,len,color] of [[-2.75,.60,'#3f8e57'],[-2.21,.66,'#65ae5a'],[-1.58,.58,'#8cc468'],[-1,.64,'#5da352'],[-.39,.61,'#3e8656']])leaf(0,-.46,len,angle,color);
  }else if([0,3,4,5,6,8].includes(type)){
   const top=[-.65,0,0,-.86,-.61,-.75,-.86,0,-.88][type];
-  curve('#634532',.077,0,top+.09,.13,top-.1,.09,Math.max(-.99,top-.25));
+  curve('#603923',.092,0,top+.09,.13,top-.1,.09,Math.max(-1.04,top-.25));
+  curve('#c49357',.027,-.022,top+.058,.088,top-.1,.068,Math.max(-1.04,top-.25));
   const len=type===3?.53:.43;
   leaf(.06,top+.025,len,top<-.8?-.05:-.48,'#5ea951');
  }
